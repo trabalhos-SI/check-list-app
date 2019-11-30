@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/logo" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/txt_login_id"
         android:layout_width="290dp"
         android:layout_height="48dp"
         android:layout_marginTop="56dp"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/txt_senha_id"
         android:layout_width="290dp"
         android:layout_height="48dp"
         android:layout_marginTop="40dp"
@@ -43,17 +43,17 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_login_id" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btn_entrar_id"
         android:layout_width="242dp"
         android:layout_height="47dp"
         android:layout_marginTop="32dp"
         android:text="ENTRAR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_senha_id" />
 
     <TextView
         android:id="@+id/textView"
@@ -64,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_entrar_id" />
 
     <TextView
         android:id="@+id/textView4"

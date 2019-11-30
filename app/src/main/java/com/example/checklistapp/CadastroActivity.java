@@ -2,6 +2,7 @@ package com.example.checklistapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -43,35 +44,20 @@ public class CadastroActivity extends AppCompatActivity {
 
                 DatabaseReference usuarios = referencia.child( "usuarios" );
 
-                String campos = "";
-
-                if(nomeCadastro.getText().toString().equals("")){
-                    campos += "Nome obrigatorio \n";
-                }
-                if(telefoneCadastro.toString().equals("")){
-                    campos += "Telefone obrigatorio \n";
-                }
-                if (emailCadastro.toString().equals("")){
-                    campos += "Email obrigatorio \n";
-                }
-                if(senhaCadastro.toString().equals("")){
-                    campos += "Senha obrigatoria";
-                }
-                if(!campos.equals("")){
-
-                    Toast.makeText(CadastroActivity.this, campos, Toast.LENGTH_SHORT).show();
-
-                }
-                if(campos.equals("")){
                     Usuario usuario = new Usuario();
 
-                    usuario.setNome("Leandro3");
-                    usuario.setTelefone("998159183");
-                    usuario.setEmail("teste2@teste2.com");
-                    usuario.setSenha("123");
+                    usuario.setNome(nomeCadastro.getText().toString());
+                    usuario.setTelefone(telefoneCadastro.getText().toString());
+                    usuario.setEmail(emailCadastro.getText().toString());
+                    usuario.setSenha(senhaCadastro.getText().toString());
 
-                    usuarios.child("002").setValue( usuario );
-                }
+                    usuarios.child("001").setValue( usuario );
+
+                    Toast.makeText(CadastroActivity.this, "Cadastro Realizado com sucesso", Toast.LENGTH_SHORT).show();
+
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
+
 
             }
         });

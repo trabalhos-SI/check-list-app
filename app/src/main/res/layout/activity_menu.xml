@@ -50,10 +50,10 @@
         android:text="Notificaçoes"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_menu_nome_id" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/txt_menu_nome_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/btn_novalista_id"
         android:layout_width="313dp"
         android:layout_height="44dp"
         android:layout_marginTop="56dp"
@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_novalista_id" />
 
     <Button
         android:id="@+id/button7"
