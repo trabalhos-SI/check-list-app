@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -25,14 +26,16 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
     //ListAdapter dataAdapter = null;
     MyCustomAdapter dataAdapter = null;
+    ArrayList<Produtos> produtosList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listagem_produtos);
+        setContentView(R.layout.main);
 
 
         displaylistView();
+        checkButtonClick();
 
     }
 
@@ -91,14 +94,14 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
         dataAdapter = new MyCustomAdapter(this, R.layout.content_main, produtosList);
 
-        ListView listView = findViewById(R.id.lisView1);
+        ListView listView = (ListView) findViewById(R.id.listView1);
 
         listView.setAdapter(dataAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Produtos produto = (Produtos) adapterView.getItemAtPosition(i);
-                Toast.makeText(ListagemProdutosActivity.this, "crique na linha " + produto.getNome(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "clique na linha " + produto.getNome(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -116,20 +119,21 @@ public class ListagemProdutosActivity extends AppCompatActivity {
             }
     }
 
-    private class ViewBolder{
+    private class ViewHolder{
 
         TextView code;
         CheckBox name;
 
     }
 
-    @NonNull
+    //@NonNull
     //@Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return getView(position, convertView, parent);
+    public View getView (int position, View convertView, ViewGroup parent) {
+        //return getView(position, convertView, parent);
 
         ViewHolder holder = null;
-        Log.i("converView", String.valueOf(position));
+
+        //Log.v("convertView", String.valueOf(position));
 
         if(convertView == null){
 
@@ -137,22 +141,68 @@ public class ListagemProdutosActivity extends AppCompatActivity {
             convertView = vi.inflate(R.layout.content_main, null);
 
             holder = new ViewHolder();
-            holder.code() = (TextView) convertView.findViewById(R.id.code);
-            holder.name = (CheckBox) convertView.findViewById(R.id.checkbox);
+            holder.code = (TextView) convertView.findViewById(R.id.code);
+            holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
 
             convertView.setTag(holder);
 
-            holder.name.setOn;
+            holder.name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    CheckBox cb = (CheckBox) v;
+                    Produtos produto = (Produtos) cb.getTag();
+                    Toast.makeText(getApplicationContext(), "cricou no check " + cb.getText(), Toast.LENGTH_SHORT).show();
 
+                    produto.setSelecionado(cb.isChecked());
 
+                }
+            });
 
+        }else{
+
+            holder = (ViewHolder) convertView.getTag();
         }
 
+        Produtos produto = produtosList.get(position);
+        holder.code.setText(" (" + produto.getId() +  ") ");
+        holder.name.setText(produto.getNome());
+        holder.name.setChecked(produto.isSelecionado());
+
+        holder.name.setTag(produto);
+
+        return convertView;
+
+    }
+
+    public void checkButtonClick(){
+
+        Button Mybutton = (Button) findViewById(R.id.findselected);
+
+        Mybutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                StringBuffer responseText = new StringBuffer();
+                responseText.append("Itens selecionados.. \n");
+
+                ArrayList<Produtos> produtoList = dataAdapter.produtosList;
+
+                for(int i = 0; i < produtoList.size(); i++){
+
+                    Produtos produto = produtoList.get(i);
+
+                    if(produto.isSelecionado()){
+                        responseText.append("\n" + produto.getNome());
+                    }
+                }
+
+                Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_SHORT).show();
 
 
 
-
+            }
+        });
     }
 }
 

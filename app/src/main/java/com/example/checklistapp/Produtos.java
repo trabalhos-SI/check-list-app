@@ -1,5 +1,8 @@
 package com.example.checklistapp;
 
+import android.view.View;
+import android.view.ViewGroup;
+
 public class Produtos {
 
     public int id;
@@ -65,5 +68,6 @@ public class Produtos {
     public void setSelecionado(boolean selecionado) {
         this.selecionado = selecionado;
     }
+
 
 }

@@ -13,6 +13,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private TextView nomeMenu;
     private Button botaoNovaLista;
+    private Button botaoSair;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class MenuActivity extends AppCompatActivity {
 
         nomeMenu = findViewById(R.id.txt_menu_nome_id);
         botaoNovaLista = findViewById(R.id.btn_novalista_id);
+        botaoSair = findViewById(R.id.btn_sair_id);
 
         nomeMenu.setText("Leandro");
 
@@ -30,6 +32,15 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 startActivity(new Intent(getApplicationContext(), ListagemProdutosActivity.class));
+            }
+        });
+
+        botaoSair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         });
 
