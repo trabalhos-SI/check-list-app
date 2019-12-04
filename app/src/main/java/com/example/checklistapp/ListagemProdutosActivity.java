@@ -1,15 +1,30 @@
 package com.example.checklistapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelStore;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class ListagemProdutosActivity extends AppCompatActivity {
 
-    ListAdapter dataAdapter = null;
+    //ListAdapter dataAdapter = null;
+    MyCustomAdapter dataAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +89,70 @@ public class ListagemProdutosActivity extends AppCompatActivity {
 
         //dataAdapter = new ListAdapter(this, R.layout.activity_listagem_produtos, produtosList);
 
+        dataAdapter = new MyCustomAdapter(this, R.layout.content_main, produtosList);
+
+        ListView listView = findViewById(R.id.lisView1);
+
+        listView.setAdapter(dataAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Produtos produto = (Produtos) adapterView.getItemAtPosition(i);
+                Toast.makeText(ListagemProdutosActivity.this, "crique na linha " + produto.getNome(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private class MyCustomAdapter extends ArrayAdapter<Produtos>{
+
+        private ArrayList<Produtos> produtosList;
+
+            public MyCustomAdapter(Context context, int textviewResourceid, ArrayList<Produtos> produtoList){
+
+                super(context, textviewResourceid, produtoList);
+                this.produtosList = new ArrayList<Produtos>();
+                this.produtosList.addAll(produtoList);
+            }
+    }
+
+    private class ViewBolder{
+
+        TextView code;
+        CheckBox name;
+
+    }
+
+    @NonNull
+    //@Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        return getView(position, convertView, parent);
+
+        ViewHolder holder = null;
+        Log.i("converView", String.valueOf(position));
+
+        if(convertView == null){
+
+            LayoutInflater  vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = vi.inflate(R.layout.content_main, null);
+
+            holder = new ViewHolder();
+            holder.code() = (TextView) convertView.findViewById(R.id.code);
+            holder.name = (CheckBox) convertView.findViewById(R.id.checkbox);
+
+            convertView.setTag(holder);
+
+            holder.name.setOn;
+
+
+
+
+        }
+
+
+
 
 
     }
 }
+
