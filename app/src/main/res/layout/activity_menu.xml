@@ -75,7 +75,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/btn_vizualizar_historico"
         android:layout_width="313dp"
         android:layout_height="44dp"
         android:layout_marginTop="12dp"
@@ -94,7 +94,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_vizualizar_historico" />
 
     <Button
         android:id="@+id/button8"

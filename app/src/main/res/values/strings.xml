@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Check List App</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string-array name="Indian_States">
+        <item preco="2.00">Açúcar</item>
+        <item>Sal</item>
+        <item>Arroz</item>
+        <item>Feijão</item>
+        <item>Farinha</item>
+        <item>Macarrão</item>
+        <item>Café</item>
+        <item>Leite</item>
+        <item>Frango</item>
+        <item>Peixe</item>
+        <item>Requeijão</item>
+        <item>Cebola</item>
+
+    </string-array>
+
+
 </resources>

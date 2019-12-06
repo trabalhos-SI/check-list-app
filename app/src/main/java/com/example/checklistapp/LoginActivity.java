@@ -9,8 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,6 +22,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginCampo;
     private EditText senhaCampo;
     private Button botaoEntrar;
+
+    private String usuarioBuscado;
+    private String senhaBuscada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +40,31 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Usuario usuario = new Usuario();
+                final Usuario usuario = new Usuario();
                 usuario.setEmail(loginCampo.getText().toString());
                 usuario.setSenha(senhaCampo.getText().toString());
 
-                if(usuario.getEmail().equals("teste@teste") && usuario.getSenha().equals("123")){
+
+
+                //usuarioBuscado = referencia.child("usuarios").child("001").getKey("email");
+
+                referencia.child("usuarios").child("001").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        usuarioBuscado = dataSnapshot.child("email").getValue().toString();
+                        senhaBuscada = dataSnapshot.child("senha").getValue().toString();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                if(usuario.getEmail().equals(usuarioBuscado) && usuario.getSenha().equals(senhaBuscada)){
 
                     startActivity(new Intent(getApplicationContext(), MenuActivity.class));
                     finish();

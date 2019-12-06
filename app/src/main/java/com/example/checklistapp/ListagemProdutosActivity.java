@@ -1,13 +1,18 @@
 package com.example.checklistapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelStore;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,189 +25,168 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ListagemProdutosActivity extends AppCompatActivity {
 
-    //ListAdapter dataAdapter = null;
-    MyCustomAdapter dataAdapter = null;
-    ArrayList<Produtos> produtosList = null;
+    ListView myList;
+    Button getChoice, clearAll;
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyChoice" ;
+    ArrayList<String> selectedItems = new ArrayList<String>();
+
+    private DatabaseReference referencia = FirebaseDatabase.getInstance().getReference();
+
+    public static int valor = 001;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.content_main);
 
-
-        displaylistView();
-        checkButtonClick();
-
-    }
-
-    private  void displaylistView()
-    {
-        ArrayList<Produtos> produtosList = new ArrayList<Produtos>();
-
-        //Produtos mercado extra
-        Produtos produtos = new Produtos(1, "veja spray", 10.99, "limpeza", "extra", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "sabonete dove", 3.50, "limpeza", "extra", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "detergente", 4.50, "limpeza", "extra", false);
-        produtosList.add(produtos);
-
-        produtos = new Produtos(1, "vinho", 6.50, "bebida", "extra", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "cerveja", 2.50, "bebida", "extra", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "energetico", 7.50, "bebida", "extra", false);
-        produtosList.add(produtos);
-
-        produtos = new Produtos(1, "arroz", 6.50, "alimento", "extra", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "feijao", 2.50, "alimento", "extra", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "carne", 27.50, "alimento", "extra", false);
-        produtosList.add(produtos);
-
-        ///////// OUTRO MERCADO
-
-        produtos = new Produtos(1, "veja spray", 7.49, "limpeza", "carrefour", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "sabonete dove", 2.80, "limpeza", "carrefour", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "detergente", 6.20, "limpeza", "carrefour", false);
-        produtosList.add(produtos);
-
-        produtos = new Produtos(1, "vinho", 8.49, "bebida", "carrefour", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "cerveja", 1.40, "bebida", "carrefour", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "energetico", 5.40, "bebida", "carrefour", false);
-        produtosList.add(produtos);
-
-        produtos = new Produtos(1, "arroz", 9.50, "alimento", "carrefour", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "feijao", 3.00, "alimento", "carrefour", false);
-        produtosList.add(produtos);
-        produtos = new Produtos(1, "carne", 19.90, "alimento", "carrefour", false);
-        produtosList.add(produtos);
-
-        ///////// OUTRO MERCADO
-
-        //dataAdapter = new ListAdapter(this, R.layout.activity_listagem_produtos, produtosList);
-
-        dataAdapter = new MyCustomAdapter(this, R.layout.content_main, produtosList);
-
-        ListView listView = (ListView) findViewById(R.id.listView1);
-
-        listView.setAdapter(dataAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Produtos produto = (Produtos) adapterView.getItemAtPosition(i);
-                Toast.makeText(getApplicationContext(), "clique na linha " + produto.getNome(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
-
-    private class MyCustomAdapter extends ArrayAdapter<Produtos>{
-
-        private ArrayList<Produtos> produtosList;
-
-            public MyCustomAdapter(Context context, int textviewResourceid, ArrayList<Produtos> produtoList){
-
-                super(context, textviewResourceid, produtoList);
-                this.produtosList = new ArrayList<Produtos>();
-                this.produtosList.addAll(produtoList);
-            }
-    }
-
-    private class ViewHolder{
-
-        TextView code;
-        CheckBox name;
-
-    }
-
-    //@NonNull
-    //@Override
-    public View getView (int position, View convertView, ViewGroup parent) {
-        //return getView(position, convertView, parent);
-
-        ViewHolder holder = null;
-
-        //Log.v("convertView", String.valueOf(position));
-
-        if(convertView == null){
-
-            LayoutInflater  vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = vi.inflate(R.layout.content_main, null);
-
-            holder = new ViewHolder();
-            holder.code = (TextView) convertView.findViewById(R.id.code);
-            holder.name = (CheckBox) convertView.findViewById(R.id.checkBox1);
-
-            convertView.setTag(holder);
-
-            holder.name.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    CheckBox cb = (CheckBox) v;
-                    Produtos produto = (Produtos) cb.getTag();
-                    Toast.makeText(getApplicationContext(), "cricou no check " + cb.getText(), Toast.LENGTH_SHORT).show();
-
-                    produto.setSelecionado(cb.isChecked());
-
-                }
-            });
-
-        }else{
-
-            holder = (ViewHolder) convertView.getTag();
+        myList = (ListView)findViewById(R.id.list);
+        getChoice = (Button)findViewById(R.id.getchoice);
+        clearAll = (Button)findViewById(R.id.clearall);
+        ArrayAdapter <String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, getResources().getStringArray(R.array.Indian_States));
+        myList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        myList.setAdapter(adapter);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        if(sharedpreferences.contains(MyPREFERENCES)){
+            LoadSelections();
         }
 
-        Produtos produto = produtosList.get(position);
-        holder.code.setText(" (" + produto.getId() +  ") ");
-        holder.name.setText(produto.getNome());
-        holder.name.setChecked(produto.isSelecionado());
+        getChoice.setOnClickListener(new Button.OnClickListener(){
 
-        holder.name.setTag(produto);
-
-        return convertView;
-
-    }
-
-    public void checkButtonClick(){
-
-        Button Mybutton = (Button) findViewById(R.id.findselected);
-
-        Mybutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
 
-                StringBuffer responseText = new StringBuffer();
-                responseText.append("Itens selecionados.. \n");
+                String selected = "";
+                int cntChoice = myList.getCount();
 
-                ArrayList<Produtos> produtoList = dataAdapter.produtosList;
+                ArrayList<String> produtos = new ArrayList<String>();
 
-                for(int i = 0; i < produtoList.size(); i++){
+                produtos = null;
 
-                    Produtos produto = produtoList.get(i);
+                SparseBooleanArray sparseBooleanArray = myList.getCheckedItemPositions();
 
-                    if(produto.isSelecionado()){
-                        responseText.append("\n" + produto.getNome());
+                referencia.child("compras").removeValue();
+
+                for(int i = 0; i < cntChoice; i++){
+                    if(sparseBooleanArray.get(i)) {
+                        selected += myList.getItemAtPosition(i).toString() + "\n";
+                        //System.out.println("checar lista:" + myList.getItemAtPosition(i).toString());
+                        SaveSelections();
+
+                        //produtos.add(myList.getItemAtPosition(i).toString());
+
+                        referencia.child("compras").child(Integer.toString(valor)).setValue(myList.getItemAtPosition(i).toString());
+                        valor++;
+
+
                     }
+
                 }
 
-                Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
+                AbrirAlerta();
 
+            }});
 
+        clearAll.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                ClearSelections();
             }
         });
+
+
     }
+
+    public void AbrirAlerta(){
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+
+        dialog.setTitle("Sucesso");
+        dialog.setMessage("Lista feita com sucesso.");
+
+        dialog.setPositiveButton("Voltar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                startActivity(new Intent(getApplicationContext(), MenuActivity.class));
+                finish();
+            }
+        });
+
+        dialog.create();
+        dialog.show();
+    }
+
+    private void SaveSelections() {
+
+        SharedPreferences.Editor prefEditor = sharedpreferences.edit();
+        String savedItems = getSavedItems();
+        prefEditor.putString(MyPREFERENCES.toString(), savedItems);
+        prefEditor.commit();
+    }
+
+    private String getSavedItems() {
+        String savedItems = "";
+        int count = this.myList.getAdapter().getCount();
+        for (int i = 0; i < count; i++) {
+            if (this.myList.isItemChecked(i)) {
+                if (savedItems.length() > 0) {
+                    savedItems += "," + this.myList.getItemAtPosition(i);
+                } else {
+                    savedItems += this.myList.getItemAtPosition(i);
+                }
+            }
+        }
+        return savedItems;
+    }
+
+    private void LoadSelections() {
+
+        if (sharedpreferences.contains(MyPREFERENCES.toString())) {
+
+            String savedItems = sharedpreferences.getString(MyPREFERENCES.toString(), "");
+            selectedItems.addAll(Arrays.asList(savedItems.split(",")));
+
+            int count = this.myList.getAdapter().getCount();
+
+            for (int i = 0; i < count; i++) {
+                String currentItem = (String) myList.getAdapter()
+                        .getItem(i);
+                if (selectedItems.contains(currentItem)) {
+                    myList.setItemChecked(i, true);
+                    Toast.makeText(getApplicationContext(),
+                            "Ultima Lista: " + currentItem,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    myList.setItemChecked(i, false);
+                }
+
+            }
+        }
+    }
+
+    private void ClearSelections() {
+        int count = this.myList.getAdapter().getCount();
+        for (int i = 0; i < count; i++) {
+            this.myList.setItemChecked(i, false);
+        }
+        SaveSelections();
+    }
+
+
 }
 
